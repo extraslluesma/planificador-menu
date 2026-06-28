@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de Iconos PWA</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #f4f6fb; color: #1a1d2e; display: flex; flex-direction: column; align-items: center; padding: 3rem; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+        canvas { border: 1px solid #dde1ec; border-radius: 8px; margin: 1rem; background: #fff; }
+        button { background: #4361ee; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 0.5rem; font-size: 1rem; }
+        button:hover { background: #3a56d4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Generador de Iconos</h2>
+        <p>Haz clic en los botones para descargar tus iconos generados por código.</p>
+        
+        <div>
+            <canvas id="canvas192" width="192" height="192"></canvas>
+            <br>
+            <button onclick="descargarIcono('canvas192', 'icon-192.png')">Descargar icon-192.png</button>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <canvas id="canvas512" width="512" height="512"></canvas>
+            <br>
+            <button onclick="descargarIcono('canvas512', 'icon-512.png')">Descargar icon-512.png</button>
+        </div>
+    </div>
+
+    <script>
+        function dibujarIcono(id, size) {
+            const canvas = document.getElementById(id);
+            const ctx = canvas.getContext('2d');
+            
+            // Fondo azul (el theme-color de tu PWA)
+            ctx.fillStyle = '#4361ee';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Círculo interior un poco más claro para dar volumen
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size * 0.4, 0, Math.PI * 2);
+            ctx.fillStyle = '#5a75f2';
+            ctx.fill();
+
+            // Emoji central (un tupper/bento box)
+            ctx.font = `${size * 0.45}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🍱', size/2, size/2 + (size * 0.05)); // Ajuste óptico del emoji
+        }
+
+        function descargarIcono(canvasId, nombreArchivo) {
+            const canvas = document.getElementById(canvasId);
+            const enlace = document.createElement('a');
+            enlace.download = nombreArchivo;
+            enlace.href = canvas.toDataURL('image/png');
+            enlace.click();
+        }
+
+        // Dibujar los iconos al cargar la página
+        window.onload = () => {
+            dibujarIcono('canvas192', 192);
+            dibujarIcono('canvas512', 512);
+        };
+    </script>
+</body>
+</html>
